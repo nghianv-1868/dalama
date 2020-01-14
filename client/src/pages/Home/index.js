@@ -29,7 +29,15 @@ function Home() {
   }, [dispatch]);
 
   useEffect(() => {
-    paginationAssets(currentPage);
+    let paginationAssetsFirst = async (page) => {
+      setCurrentPage(page);
+      let startRecord = (page - 1) * 9;
+      let endRecord = startRecord + 8;
+      setAssetsPagination(
+        listAssets.filter((data, index) => index >= startRecord && index <= endRecord)
+      );
+    };
+    paginationAssetsFirst(currentPage);
   }, [currentPage, listAssets]);
 
   let paginationAssets = async (page) => {
@@ -87,7 +95,6 @@ function Home() {
               total={listAssets ? listAssets.length : 0}
               onChange={paginationAssets}
               pageSize={9}
-              showTotal={(total) => `Total ${total} items`}
             />
           </Spin>
         </div>
